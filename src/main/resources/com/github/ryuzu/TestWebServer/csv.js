@@ -7,7 +7,7 @@ document.getElementById("reload_button").addEventListener("click", async event =
     for (const [key, value] of Object.entries(json_data)) {
         const clone = template.content.cloneNode(true);
         clone.querySelector(".key").textContent = key;
-        clone.querySelector(".key").textContent = value;
+        clone.querySelector(".value").textContent = value;
         container.appendChild(clone)
     }
 });
