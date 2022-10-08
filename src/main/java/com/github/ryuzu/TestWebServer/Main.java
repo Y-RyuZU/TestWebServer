@@ -13,6 +13,7 @@ public class Main {
         server.createContext("/csv.html", new FileHandler("csv.html"));
         server.createContext("/csv.js", new FileHandler("csv.js"));
         server.createContext("/api/random_data", new RandomDataHandler());
+        server.createContext("/api/proxy", new ProxyHandler());
         server.start();
     }
 }

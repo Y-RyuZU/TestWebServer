@@ -13,8 +13,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class RandomDataHandler implements HttpHandler {
-    private Random random = new Random();
-    private Gson gson = new Gson();
+    private final Random random = new Random();
+    private final Gson gson = new Gson();
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -33,6 +33,7 @@ public class RandomDataHandler implements HttpHandler {
         var content = data.get(random.nextInt(data.size()));
         var jsonByte = gson.toJson(content).getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.sendResponseHeaders(200, jsonByte.length);
         var output = exchange.getResponseBody();
         output.write(jsonByte);
