@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer;
+package com.github.ryuzu.TestWebServer.Archives;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;

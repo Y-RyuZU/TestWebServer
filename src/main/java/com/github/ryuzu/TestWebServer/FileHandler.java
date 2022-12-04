@@ -44,7 +44,6 @@ public class FileHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("FileHandler");
         byte[] resBody = new byte[0];
         var stream = getClass().getResourceAsStream(file).readAllBytes();
         if (stream != null) resBody = stream;

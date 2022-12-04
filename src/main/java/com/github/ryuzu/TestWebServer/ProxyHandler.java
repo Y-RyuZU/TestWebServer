@@ -1,41 +1,34 @@
 package com.github.ryuzu.TestWebServer;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 
-public class ProxyHandler implements HttpHandler {
-    @Override
-    public void handle(HttpExchange exchange) {
-        var queries = exchange.getRequestURI().getRawQuery().split("&");
-        var headers = new HashMap<String, String>();
-        for (var query : queries) {
-            var decoded = URLDecoder.decode(query.split("=")[1], StandardCharsets.UTF_8);
-            headers.put(query.split("=")[0], decoded);
-        }
-        String src = headers.get("url");
-        var request = HttpRequest.newBuilder(URI.create(src))
+@RestController
+@CrossOrigin(origins = "http://localhost:5173")
+public class ProxyHandler {
+    @RequestMapping("/api/proxy")
+    public static ResponseEntity<byte[]> proxy(@RequestParam("url") String url) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder(URI.create(url))
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36")
                 .build();
-        try {
-            var responce = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofByteArray());
-            exchange.getResponseHeaders().add("Content-Type", responce.headers().firstValue("Content-Type").orElse("application/octet-stream"));
-            System.out.println(responce.headers().firstValue("Content-Type").orElse("application/octet-stream"));
-            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-            exchange.sendResponseHeaders(200, responce.body().length);
-            var output = exchange.getResponseBody();
-            output.write(responce.body());
-            output.close();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+//        Resource resource = new PathResource(Path.of(new URL(url).getPath()));
+//        response.setContentType(Files.probeContentType(resource.getFile().toPath()));
+        var send = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofByteArray());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION)
+                .contentType(send.headers().firstValue("Content-Type").map(MediaType::valueOf).orElse(MediaType.APPLICATION_OCTET_STREAM))
+                .body(send.body());
     }
 }

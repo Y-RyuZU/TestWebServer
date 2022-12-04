@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer;
+package com.github.ryuzu.TestWebServer.Archives;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
