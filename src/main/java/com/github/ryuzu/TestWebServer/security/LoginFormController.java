@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.LoginForm;
+package com.github.ryuzu.TestWebServer.security;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PutMapping;

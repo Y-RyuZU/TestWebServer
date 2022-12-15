@@ -1,9 +1,5 @@
 package com.github.ryuzu.TestWebServer.Utilities;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +14,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class StrapiPostWrapper<T> {
+public abstract class StrapiPostWrapper<T> {
     private final String database;
     private final HttpHeaders headers = new HttpHeaders();
     private final RestTemplate restTemplate;

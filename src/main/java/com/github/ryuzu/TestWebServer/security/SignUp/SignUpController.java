@@ -1,12 +1,7 @@
-package com.github.ryuzu.TestWebServer.LoginForm.SignUp;
+package com.github.ryuzu.TestWebServer.security.SignUp;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.ryuzu.TestWebServer.Main;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URISyntaxException;
 
@@ -19,17 +14,16 @@ public class SignUpController {
     }
 
     @PostMapping("/api/signup")
-    public void signup(@RequestBody SignUpBody body) throws JsonProcessingException, URISyntaxException {
+    public void signup(@RequestBody AccountForm body) throws URISyntaxException {
         // パスワードの強度を10に設定(4～31)
         String hashedPassword = Main.passwordEncoder.encode(body.password());
         service.post(body.username(), hashedPassword);
     }
 
     @PostMapping("/api/signin")
-    public String signin(@RequestBody SignUpBody body) throws URISyntaxException {
+    public String signin(@RequestBody AccountForm body) throws URISyntaxException {
         return service.check(body.username(), body.password());
     }
-}
 
-record SignUpBody(String username, String password) {
+    record AccountForm(String username, String password) {}
 }
