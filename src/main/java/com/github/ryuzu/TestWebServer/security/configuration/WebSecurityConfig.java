@@ -35,13 +35,11 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.util.Arrays;
 
 @Configuration
-@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true) // メソッド認可処理を有効化
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
-        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         // @formatter:off
 //        http
@@ -65,26 +63,31 @@ public class WebSecurityConfig {
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
 
-        http.exceptionHandling()
-                .accessDeniedPage("/accessDeniedPage");
+//        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+//        http.csrf().disable();
 
-        http.cors().configurationSource(corsConfigurationSource());
-        http
-//              .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
-                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
+//        http.exceptionHandling()
+//                .accessDeniedPage("/accessDeniedPage");
+
+//        http.cors().configurationSource(corsConfigurationSource());
+//        http
+//                .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
+//                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
+//        ;
+        http.authorizeHttpRequests()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/user/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .anyRequest().permitAll();
         ;
 
-        // ログインが必須なページを修正
-        http.authorizeHttpRequests()
-                .antMatchers("/get").permitAll()
-                .mvcMatchers("/api/signin").permitAll()
-                .mvcMatchers("/api/signup").permitAll()
-                .antMatchers("/post").authenticated()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated();
+        http.formLogin()
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/", true);
+
+        http.cors().disable();
+        http.csrf().disable();
 
         return http.build();
     }
@@ -95,24 +98,9 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        cors.setAllowedMethods(Arrays.asList("GET", "POST"));
-        cors.setAllowedHeaders(Arrays.asList("*"));
-        cors.setAllowCredentials(true);
-        cors.addExposedHeader("X-AUTH-TOKEN");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cors);
-        return source;
-    }
-
-    @Bean
     public InMemoryUserDetailsManager userDetailsManager() {
         UserDetails user = User.withUsername("ryuzu")
-                .password(PasswordEncoderFactories
-                                .createDelegatingPasswordEncoder()
-                                .encode("password"))
+                .password(passwordEncoder().encode("password"))
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(user);

@@ -24,7 +24,6 @@ dependencies {
 
     //spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.auth0:java-jwt:3.18.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -43,6 +42,9 @@ dependencies {
 
     //Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //Java JWT
+    implementation 'com.auth0:java-jwt:latest.release'
 }
 
 test {

@@ -10,14 +10,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -34,7 +38,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .withIssuer("com.github.ryuzu")
                     .withClaim("username", ex.getName())
                     .sign(Algorithm.HMAC256("secret"));
-            res.setHeader("X-AUTH-TOKEN", token);
+            res.addCookie(new Cookie("JWT", token));
             res.setStatus(200);
         });
 
@@ -46,54 +50,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            // あとで作成するLoginFormクラスを、リクエストのパラメータとマッピングして作成する
             AccountEntity account = new Gson().fromJson(request.getReader(), AccountEntity.class);
-            // 作成したLoginFormクラスの内容でログインの実行をする
             return this.authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword(), new ArrayList<>())
+                    new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword(), List.of(new SimpleGrantedAuthority("USER")))
             );
         } catch (IOException e) {
+
             throw new RuntimeException(e);
         }
     }
-
-//    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-//        String token = resolveToken(request);
-//        if (token == null) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//
-//        try {
-//            authentication(verifyToken(token));
-//        } catch (JWTVerificationException e) {
-//            log.error("verify token error", e);
-//            SecurityContextHolder.clearContext();
-//            ((HttpServletResponse) response).sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//        }
-//        filterChain.doFilter(request, response);
-//    }
-
-//    private String resolveToken(ServletRequest request) {
-//        String token = ((HttpServletRequest) request).getHeader("Authorization");
-//        if (token == null || !token.startsWith("Bearer ")) {
-//            return null;
-//        }
-//        return token.substring(7);
-//    }
-//
-//    private DecodedJWT verifyToken(String token) {
-//        JWTVerifier verifier = JWT.require(algorithm).build();
-//        return verifier.verify(token);
-//    }
-//
-//    private void authentication(DecodedJWT jwt) {
-//        Long userId = Long.valueOf(jwt.getSubject());
-//        userRepository.findById(userId).ifPresent(user -> {
-//            SimpleLoginUser simpleLoginUser = new SimpleLoginUser(user);
-//            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(simpleLoginUser, null, simpleLoginUser.getAuthorities()));
-//        });
-//    }
-
 }
