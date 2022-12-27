@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             AccountEntity account = new Gson().fromJson(request.getReader(), AccountEntity.class);
             return this.authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword(), List.of(new SimpleGrantedAuthority("USER")))
+                    new UsernamePasswordAuthenticationToken(account.getDisplayName(), account.getHashedPassword(), List.of(new SimpleGrantedAuthority("USER")))
             );
         } catch (IOException e) {
 

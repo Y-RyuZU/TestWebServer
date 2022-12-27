@@ -1,5 +1,9 @@
 package com.github.ryuzu.TestWebServer.Utilities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ryuzu.TestWebServer.Main;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -17,6 +21,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 
 public abstract class StrapiWrapper<T> {
     private final String database;
@@ -47,27 +53,45 @@ public abstract class StrapiWrapper<T> {
         ), new ParameterizedTypeReference<>() {});
     }
 
-    public List<Identify<T>> getWithId() throws URISyntaxException {
-        return response("").getBody().data;
+    private @NotNull String debug(String query) throws URISyntaxException {
+        return restTemplate.getForObject(new URI(scheme, null, "strapi", port, "/api/" + database, query, null), String.class);
     }
 
-    public List<T> get() throws URISyntaxException {
-        var responce = response("").getBody().data.stream().map(x -> x.attributes).collect(Collectors.toList());
-        return response("").getBody().data.stream()
-                .map(x -> Main.gson.fromJson(Main.gson.toJsonTree(x.attributes), (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), StrapiWrapper.class))
-        ).collect(Collectors.toList());
+    public List<Identify<T>> getWithId() throws URISyntaxException {
+        return response("").getBody().data;
     }
 
     public String post(T data) throws URISyntaxException {
         return restTemplate.postForObject(new URI(scheme, null, "strapi", port, "/api/" + database , null , null), new Data(data), String.class);
     }
 
-    public List<T> find(Map<String, String> filters) throws URISyntaxException {
-        var query = filters.entrySet().stream().map(x -> "filters" + x.getKey() + "=" + x.getValue()).collect(Collectors.joining("&", "?", ""));
-        return response(query).getBody().data().stream().map(x -> x.attributes).collect(Collectors.toList());
+    public List<T> find() throws URISyntaxException {
+        return find("");
     }
 
+    public List<T> find(Map<String, String> filters) throws URISyntaxException {
+        return find(toQuery(filters));
+    }
+
+    public List<T> find(String query) throws URISyntaxException {
+        return response(query).getBody().data.stream()
+                .map(x -> Main.gson.fromJson(Main.gson.toJsonTree(x.attributes), (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), StrapiWrapper.class))
+                ).collect(Collectors.toList());
+    }
+
+    public T findUnique(Map<String, String> filters) throws URISyntaxException {
+        return response(toQuery(filters)).getBody().data.stream()
+                .map(x -> Main.gson.fromJson(Main.gson.toJsonTree(x.attributes), (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), StrapiWrapper.class))
+                ).findFirst().orElse(null);
+    }
+
+    private String toQuery(Map<String, String> filters) {
+        return filters.entrySet().stream().map(x -> "filters" + x.getKey() + "=" + x.getValue()).collect(Collectors.joining("&"));
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
     record Data<T>(T data) {}
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     record Identify<T>(int id, T attributes) {}
 }

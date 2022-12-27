@@ -1,6 +1,9 @@
 package com.github.ryuzu.TestWebServer.security.configuration;
 
 import com.github.ryuzu.TestWebServer.security.*;
+import com.github.ryuzu.TestWebServer.security.service.Role;
+import com.github.ryuzu.TestWebServer.security.service.RoleUtility;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +41,12 @@ import java.util.Arrays;
 @EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
 
+    private UserDetailsService userDetailsService;
+
+    WebSecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
 
@@ -74,10 +83,12 @@ public class WebSecurityConfig {
 //                .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
 //                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
 //        ;
+        http.userDetailsService(userDetailsService);
         http.authorizeHttpRequests()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers("/mod/**").hasRole(Role.MOD.name())
 //                .anyRequest().permitAll();
         ;
 
@@ -95,15 +106,6 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails user = User.withUsername("ryuzu")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
     }
 
     @Bean

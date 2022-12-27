@@ -15,14 +15,7 @@ public class SignUpController {
 
     @PostMapping("/api/signup")
     public void signup(@RequestBody AccountForm body) throws URISyntaxException {
-        // パスワードの強度を10に設定(4～31)
-        String hashedPassword = Main.passwordEncoder.encode(body.password());
-        service.post(body.username(), hashedPassword);
-    }
-
-    @PostMapping("/api/signin")
-    public String signin(@RequestBody AccountForm body) throws URISyntaxException {
-        return service.check(body.username(), body.password());
+        service.post(body);
     }
 
     record AccountForm(String username, String password) {}

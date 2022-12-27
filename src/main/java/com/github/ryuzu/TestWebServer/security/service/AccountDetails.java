@@ -20,17 +20,17 @@ public class AccountDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { // ユーザに与えられている権限リストを返却するメソッド
-        return AuthorityUtils.createAuthorityList("ROLE_" /*+ this.entity.getRole().toString()*/);
+        return AuthorityUtils.createAuthorityList(RoleUtility.getRolesStringWithPrefix(entity.getRoles()));
     }
 
     @Override
     public String getPassword() { // 登録されているパスワードを返却するメソッド
-        return this.entity.getPassword();
+        return this.entity.getHashedPassword();
     }
 
     @Override
     public String getUsername() { // ユーザ名を返却するメソッド
-        return this.entity.getUsername();
+        return this.entity.getDisplayName();
     }
 
     @Override
