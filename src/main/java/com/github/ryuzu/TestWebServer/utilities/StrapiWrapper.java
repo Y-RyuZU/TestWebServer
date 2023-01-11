@@ -1,12 +1,7 @@
-package com.github.ryuzu.TestWebServer.Utilities;
+package com.github.ryuzu.TestWebServer.utilities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ryuzu.TestWebServer.Main;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.GenericTypeResolver;
@@ -21,8 +16,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 
 public abstract class StrapiWrapper<T> {
     private final String database;

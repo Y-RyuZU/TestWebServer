@@ -1,6 +1,6 @@
 package com.github.ryuzu.TestWebServer.SchoolScheduler;
 
-import com.github.ryuzu.TestWebServer.Utilities.DataBaseUtilities;
+import com.github.ryuzu.TestWebServer.utilities.DataBaseUtilities;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

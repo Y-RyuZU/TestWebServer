@@ -1,12 +1,9 @@
-package com.github.ryuzu.TestWebServer.Utilities;
-
-import org.mariadb.jdbc.util.StringUtils;
+package com.github.ryuzu.TestWebServer.utilities;
 
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 public class DataBaseUtilities {
     private static void connect(Consumer<Connection> consumer) {

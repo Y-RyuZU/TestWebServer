@@ -1,8 +1,7 @@
 package com.github.ryuzu.TestWebServer.security.service;
 
-import com.github.ryuzu.TestWebServer.Utilities.StrapiWrapper;
+import com.github.ryuzu.TestWebServer.utilities.StrapiWrapper;
 import com.github.ryuzu.TestWebServer.security.entity.AccountEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,10 +34,7 @@ public class AccountDetailsService implements UserDetailsService {
         // User一件を取得 userNameが無ければ例外発生
         try {
             // Userを取得
-            System.out.println("debug: ----------------------------------------------------{");
             AccountEntity account = wrapper.findUnique(new HashMap<>(){{put("[DisplayName][$eq]", userName);}});
-
-            System.out.println("}----------------------------------------------------");
 
             Collection<GrantedAuthority> authority =
                     Arrays.stream(RoleUtility.getRolesStringWithPrefix(account.getRoles()))

@@ -1,13 +1,9 @@
 package com.github.ryuzu.TestWebServer.security.SignUp;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.ryuzu.TestWebServer.Main;
-import com.github.ryuzu.TestWebServer.Utilities.StrapiWrapper;
+import com.github.ryuzu.TestWebServer.utilities.StrapiWrapper;
 import com.github.ryuzu.TestWebServer.security.entity.AccountEntity;
 import com.github.ryuzu.TestWebServer.security.service.Role;
-import com.github.ryuzu.TestWebServer.security.service.RoleUtility;
-import lombok.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 

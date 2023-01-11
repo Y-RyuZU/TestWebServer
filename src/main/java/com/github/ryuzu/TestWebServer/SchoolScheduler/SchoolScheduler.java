@@ -1,11 +1,9 @@
 package com.github.ryuzu.TestWebServer.SchoolScheduler;
 
-import com.github.ryuzu.TestWebServer.Utilities.DataBaseUtilities;
+import com.github.ryuzu.TestWebServer.utilities.DataBaseUtilities;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
