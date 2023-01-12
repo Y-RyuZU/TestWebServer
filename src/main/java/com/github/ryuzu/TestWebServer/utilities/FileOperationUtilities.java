@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class FileOperationUtilities {
-    private static final String[] units = {" B", " KB", " MB", " GB", " TB"};
+    private static final String[] units = {"B", "KB", "MB", "GB", "TB"};
 
     public static String getUnit(final long fileSize) {
         return units[convertToFileSize(fileSize).counter];
