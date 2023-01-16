@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.SchoolScheduler;
+package com.github.ryuzu.TestWebServer.school.scheduler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

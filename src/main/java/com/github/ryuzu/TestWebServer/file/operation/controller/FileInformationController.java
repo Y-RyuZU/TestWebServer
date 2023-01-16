@@ -1,8 +1,7 @@
-package com.github.ryuzu.TestWebServer.FileOperation.controller;
+package com.github.ryuzu.TestWebServer.file.operation.controller;
 
-import com.github.ryuzu.TestWebServer.FileOperation.models.FileInformationEntity;
+import com.github.ryuzu.TestWebServer.file.operation.models.FileInformationEntity;
 import com.github.ryuzu.TestWebServer.Main;
-import com.github.ryuzu.TestWebServer.utilities.FileOperationUtilities;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,11 +11,11 @@ import java.util.List;
 
 @RestController
 public class FileInformationController {
-    @GetMapping("/api/files")
+    @GetMapping("/api/files/get")
     public String getFiles() {
-        String workingDir = "C:\\Users\\atsuk\\Desktop\\IntelliJ IDEA\\TestWebServer";
+        var workingDir = "C:\\Users\\atsuk\\Desktop\\IntelliJ IDEA\\TestWebServer";
 
-        File file1 = new File(workingDir);
+        var file1 = new File(workingDir);
         File[] list = file1.listFiles();
 
         List<FileInformationEntity> entities = Arrays.stream(list)

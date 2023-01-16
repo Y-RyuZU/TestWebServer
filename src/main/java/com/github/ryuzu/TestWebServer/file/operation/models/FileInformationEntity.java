@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.FileOperation.models;
+package com.github.ryuzu.TestWebServer.file.operation.models;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

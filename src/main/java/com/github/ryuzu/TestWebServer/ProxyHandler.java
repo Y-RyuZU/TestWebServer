@@ -23,8 +23,6 @@ public class ProxyHandler {
         HttpRequest request = HttpRequest.newBuilder(URI.create(url))
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36")
                 .build();
-//        Resource resource = new PathResource(Path.of(new URL(url).getPath()));
-//        response.setContentType(Files.probeContentType(resource.getFile().toPath()));
         var send = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofByteArray());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION)

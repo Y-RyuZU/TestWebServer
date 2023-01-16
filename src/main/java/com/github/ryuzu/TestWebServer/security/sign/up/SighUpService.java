@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.security.SignUp;
+package com.github.ryuzu.TestWebServer.security.sign.up;
 
 import com.github.ryuzu.TestWebServer.Main;
 import com.github.ryuzu.TestWebServer.utilities.StrapiWrapper;

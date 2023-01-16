@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.One2OneQuestion;
+package com.github.ryuzu.TestWebServer.questions.one2one;
 
 import com.github.ryuzu.TestWebServer.utilities.DataBaseUtilities;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.SchoolScheduler;
+package com.github.ryuzu.TestWebServer.school.scheduler;
 
 import com.github.ryuzu.TestWebServer.utilities.DataBaseUtilities;
 import com.google.gson.Gson;

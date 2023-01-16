@@ -1,6 +1,5 @@
-package com.github.ryuzu.TestWebServer.security.SignUp;
+package com.github.ryuzu.TestWebServer.security.sign.up;
 
-import com.github.ryuzu.TestWebServer.Main;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
