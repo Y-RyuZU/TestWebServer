@@ -16,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FileMoveController {
     private final FileMoveService service;
-    @PostMapping("api/files/move/{path:.*}")
+    @PostMapping("api/files/move/{path:.+}")
     public void move(@AuthenticationPrincipal AccountDetails details, @PathVariable String path, @RequestParam("to") String to) throws IOException {
         var fromFolder = new File(FileInformationController.workingDir + "/" + path);
         var toFolder = new File(FileInformationController.workingDir + "/" + to);
