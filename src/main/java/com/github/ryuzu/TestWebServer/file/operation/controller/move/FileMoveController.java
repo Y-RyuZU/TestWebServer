@@ -1,9 +1,7 @@
 package com.github.ryuzu.TestWebServer.file.operation.controller.move;
 
-import com.github.ryuzu.TestWebServer.file.operation.models.log.FileOperationLog;
-import com.github.ryuzu.TestWebServer.file.operation.models.log.FileOperationLogType;
+import com.github.ryuzu.TestWebServer.file.operation.controller.information.FileInformationController;
 import com.github.ryuzu.TestWebServer.security.service.AccountDetails;
-import com.google.common.io.Files;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +14,12 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class FIleMoveController {
-    private final FIleMoveService service;
+public class FileMoveController {
+    private final FileMoveService service;
     @PostMapping("api/files/move/{path:.*}")
-    public void move(@AuthenticationPrincipal AccountDetails details, @PathVariable String path, @RequestParam String to) throws IOException {
-        var fromFolder = new File(path);
-        var toFolder = new File(path);
+    public void move(@AuthenticationPrincipal AccountDetails details, @PathVariable String path, @RequestParam("to") String to) throws IOException {
+        var fromFolder = new File(FileInformationController.workingDir + "/" + path);
+        var toFolder = new File(FileInformationController.workingDir + "/" + to);
         service.move(details, fromFolder , toFolder);
     }
 }

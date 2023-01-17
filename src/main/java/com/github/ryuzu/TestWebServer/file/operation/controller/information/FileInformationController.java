@@ -14,10 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileInformationController {
     private final FileInformationService service;
+    public static final String workingDir = "C:\\Users\\atsuk\\Desktop\\IntelliJ IDEA\\TestWebServer";
 
     @GetMapping("/api/files/get")
     public String getFiles() {
-        var workingDir = "C:\\Users\\atsuk\\Desktop\\IntelliJ IDEA\\TestWebServer";
         return service.getFiles(new File(workingDir));
     }
 }

@@ -17,7 +17,7 @@ import java.nio.file.Path;
 public class FileDownloadController {
     private final FileDownloadService service;
 
-    @GetMapping("api/files/move/{path:.*}")
+    @GetMapping("api/files/download/{path:.*}")
     public void download(@PathVariable String path, HttpServletResponse response) {
         var file = new File(path);
         if (!file.exists()) throw new IllegalArgumentException();

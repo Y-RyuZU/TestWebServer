@@ -18,7 +18,7 @@ import java.io.*;
 public class FileUploadController {
     private final FileUploadService service;
 
-    @PostMapping("api/files/move/{path:.*}")
+    @PostMapping("api/files/upload/{path:.*}")
     public void upload(@AuthenticationPrincipal AccountDetails details, @PathVariable String path, @RequestParam("file") MultipartFile file) {
         var folder = new File(path);
         service.upload(details, folder, file);
