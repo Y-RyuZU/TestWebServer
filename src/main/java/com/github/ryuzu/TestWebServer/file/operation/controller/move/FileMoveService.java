@@ -13,10 +13,10 @@ import java.io.IOException;
 public class FileMoveService {
     public void move(AccountDetails details, File from, File to) throws IOException {
         Files.move(from, to);
-        FileOperationLog.builder().account(details.getUser())
-                .path(from.getPath())
-                .type(FileOperationLogType.MOVE)
-                .detail(to.getPath())
-                .build().carve();
+//        FileOperationLog.builder().account(details.getUser())
+//                .path(from.getPath())
+//                .type(FileOperationLogType.MOVE)
+//                .detail(to.getPath())
+//                .build().carve();
     }
 }

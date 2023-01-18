@@ -3,6 +3,8 @@ package com.github.ryuzu.TestWebServer.security.configuration;
 import com.github.ryuzu.TestWebServer.security.*;
 import com.github.ryuzu.TestWebServer.security.service.Role;
 import com.github.ryuzu.TestWebServer.security.service.RoleUtility;
+import com.github.ryuzu.TestWebServer.utilities.WildcardParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,22 +33,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    WebSecurityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    private final PathMatcher pathMatcher;
 
     @Bean
     public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
@@ -106,6 +111,17 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public List<HandlerMethodArgumentResolver> addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(wildcardParamResolver());
+        return resolvers;
+    }
+
+    @Bean
+    public WildcardParam.Resolver wildcardParamResolver() {
+        return new WildcardParam.Resolver(this.pathMatcher);
     }
 
     @Bean

@@ -2,9 +2,7 @@ package com.github.ryuzu.TestWebServer.file.operation.controller.download;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -17,8 +15,11 @@ import java.nio.file.Path;
 public class FileDownloadController {
     private final FileDownloadService service;
 
-    @GetMapping("api/files/download/{path:.*}")
-    public void download(@PathVariable String path, HttpServletResponse response) {
+    @PostMapping("api/files/download")
+    public void download(
+            @RequestParam String path,
+            HttpServletResponse response
+    ) {
         var file = new File(path);
         if (!file.exists()) throw new IllegalArgumentException();
         service.download(file, response);
