@@ -19,9 +19,9 @@ public class FileUploadService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        FileOperationLog.builder().account(details.getUser())
-                .path(folder.getPath() + "/" + file.getOriginalFilename())
-                .type(FileOperationLogType.UPLOAD)
-                .build().carve();
+//        FileOperationLog.builder().account(details.getUser())
+//                .path(folder.getPath() + "/" + file.getOriginalFilename())
+//                .type(FileOperationLogType.UPLOAD)
+//                .build().carve();
     }
 }
