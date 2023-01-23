@@ -28,9 +28,8 @@ public @interface WildcardParam {
         }
 
         @Override
-        public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modeContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        public Object resolveArgument(@NotNull MethodParameter methodParameter, ModelAndViewContainer modeContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
             var servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-            System.out.println("uoooooooooDebuggggggggggggggg");
             if (servletRequest == null) return null;
             String patternAttribute = servletRequest.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
             String mappingAttribute = servletRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();

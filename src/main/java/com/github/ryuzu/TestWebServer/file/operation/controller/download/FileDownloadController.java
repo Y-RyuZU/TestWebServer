@@ -1,5 +1,6 @@
 package com.github.ryuzu.TestWebServer.file.operation.controller.download;
 
+import com.github.ryuzu.TestWebServer.utilities.WildcardParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,10 +1,8 @@
 package com.github.ryuzu.TestWebServer.file.operation.controller.information;
 
 import com.github.ryuzu.TestWebServer.Main;
-import com.github.ryuzu.TestWebServer.file.operation.models.FileInformationEntity;
+import com.github.ryuzu.TestWebServer.file.operation.models.information.FileInformationEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.util.Arrays;

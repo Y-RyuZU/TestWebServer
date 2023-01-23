@@ -13,9 +13,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +39,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,10 +47,9 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
     private final UserDetailsService userDetailsService;
-
     private final PathMatcher pathMatcher;
 
     @Bean
@@ -114,19 +114,12 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public List<HandlerMethodArgumentResolver> addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(wildcardParamResolver());
-        return resolvers;
-    }
-
-    @Bean
-    public WildcardParam.Resolver wildcardParamResolver() {
-        return new WildcardParam.Resolver(this.pathMatcher);
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new WildcardParam.Resolver(pathMatcher));
+    }
 }
