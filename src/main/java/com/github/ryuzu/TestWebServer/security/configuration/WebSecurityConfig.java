@@ -47,7 +47,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
-public class WebSecurityConfig implements WebMvcConfigurer {
+public class WebSecurityConfig /*implements WebMvcConfigurer*/ {
 
     private final UserDetailsService userDetailsService;
     private final PathMatcher pathMatcher;
@@ -118,7 +118,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
+//    @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new WildcardParam.Resolver(pathMatcher));
     }
