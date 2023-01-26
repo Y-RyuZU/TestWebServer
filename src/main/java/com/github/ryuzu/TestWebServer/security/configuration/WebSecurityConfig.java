@@ -33,6 +33,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -47,10 +48,9 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
-public class WebSecurityConfig /*implements WebMvcConfigurer*/ {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
     private final UserDetailsService userDetailsService;
-    private final PathMatcher pathMatcher;
 
     @Bean
     public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
@@ -118,8 +118,13 @@ public class WebSecurityConfig /*implements WebMvcConfigurer*/ {
         return new BCryptPasswordEncoder();
     }
 
-//    @Override
+    @Bean
+    public PathMatcher pathMatcher() {
+        return new AntPathMatcher();
+    }
+
+    @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new WildcardParam.Resolver(pathMatcher));
+        resolvers.add(new WildcardParam.Resolver(pathMatcher()));
     }
 }

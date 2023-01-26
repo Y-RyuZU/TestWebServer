@@ -20,7 +20,6 @@ public class FileTreeController {
     public String getFiles(
             @WildcardParam String path
     ) {
-        System.out.println("path: " + path);
         return Main.gson.toJson(service.getDirectoryTree(new File(System.getProperty("user.dir") + "/" + "src/main")));
     }
 }
