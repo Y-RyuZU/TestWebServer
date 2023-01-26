@@ -1,7 +1,8 @@
 package com.github.ryuzu.TestWebServer.file.operation.controller.download;
 
-import com.github.ryuzu.TestWebServer.utilities.WildcardParam;
+import com.github.ryuzu.TestWebServer.utilities.annotations.WildcardParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +15,10 @@ import java.io.File;
 public class FileDownloadController {
     private final FileDownloadService service;
 
-    @PostMapping("api/files/download")
+    @PostMapping("api/files/download/**")
+    @CrossOrigin("http://localhost:5173")
     public void download(
-            @RequestParam String path,
+            @WildcardParam String path,
             HttpServletResponse response
     ) {
         var file = new File(path);

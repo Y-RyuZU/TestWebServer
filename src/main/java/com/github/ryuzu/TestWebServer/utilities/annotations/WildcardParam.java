@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.utilities;
+package com.github.ryuzu.TestWebServer.utilities.annotations;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
