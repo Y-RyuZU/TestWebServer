@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.security.service;
+package com.github.ryuzu.TestWebServer.utilities.role;
 
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
-package com.github.ryuzu.TestWebServer.security.service;
+package com.github.ryuzu.TestWebServer.security.entity;
 
-import com.github.ryuzu.TestWebServer.security.entity.AccountEntity;
+import com.github.ryuzu.TestWebServer.utilities.role.RoleUtility;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

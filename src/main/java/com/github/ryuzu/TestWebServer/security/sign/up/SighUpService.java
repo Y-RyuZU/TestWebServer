@@ -1,9 +1,9 @@
 package com.github.ryuzu.TestWebServer.security.sign.up;
 
 import com.github.ryuzu.TestWebServer.Main;
-import com.github.ryuzu.TestWebServer.utilities.StrapiWrapper;
+import com.github.ryuzu.TestWebServer.utilities.strapi.StrapiWrapper;
 import com.github.ryuzu.TestWebServer.security.entity.AccountEntity;
-import com.github.ryuzu.TestWebServer.security.service.Role;
+import com.github.ryuzu.TestWebServer.utilities.role.Role;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 

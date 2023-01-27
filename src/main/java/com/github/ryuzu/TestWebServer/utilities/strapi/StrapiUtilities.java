@@ -1,4 +1,4 @@
-package com.github.ryuzu.TestWebServer.utilities;
+package com.github.ryuzu.TestWebServer.utilities.strapi;
 
 public class StrapiUtilities {
     public static String getStrapiUrl(String database) {

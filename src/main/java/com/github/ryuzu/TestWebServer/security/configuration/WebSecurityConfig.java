@@ -1,6 +1,6 @@
 package com.github.ryuzu.TestWebServer.security.configuration;
 
-import com.github.ryuzu.TestWebServer.security.service.Role;
+import com.github.ryuzu.TestWebServer.utilities.role.Role;
 import com.github.ryuzu.TestWebServer.utilities.annotations.WildcardParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

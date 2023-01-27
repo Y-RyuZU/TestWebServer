@@ -1,6 +1,7 @@
 package com.github.ryuzu.TestWebServer.security.service;
 
-import com.github.ryuzu.TestWebServer.utilities.StrapiWrapper;
+import com.github.ryuzu.TestWebServer.utilities.role.RoleUtility;
+import com.github.ryuzu.TestWebServer.utilities.strapi.StrapiWrapper;
 import com.github.ryuzu.TestWebServer.security.entity.AccountEntity;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.core.GrantedAuthority;
