@@ -1,5 +1,6 @@
 package com.github.ryuzu.TestWebServer;
 
+import com.github.ryuzu.TestWebServer.discord.DiscordBot;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,7 @@ public class Main extends SpringBootServletInitializer {
     public static final Gson gson = new Gson();
 
     public static void main(String[] args) {
+        DiscordBot.initialize();
         SpringApplication.run(Main.class, args);
     }
 }
