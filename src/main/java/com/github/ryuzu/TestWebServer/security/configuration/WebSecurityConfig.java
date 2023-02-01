@@ -64,6 +64,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
 //        ;
         http.userDetailsService(userDetailsService);
+
         http.authorizeHttpRequests()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/user/**").authenticated()
@@ -91,15 +92,5 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public PathMatcher pathMatcher() {
-        return new AntPathMatcher();
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new WildcardParam.Resolver(pathMatcher()));
     }
 }
