@@ -1,5 +1,7 @@
 package com.github.ryuzu.TestWebServer.security.configuration;
 
+import com.github.ryuzu.TestWebServer.security.oauth2.RestOAuth2AccessTokenResponseClient;
+import com.github.ryuzu.TestWebServer.security.oauth2.RestOAuth2UserService;
 import com.github.ryuzu.TestWebServer.utilities.role.Role;
 import com.github.ryuzu.TestWebServer.utilities.annotations.WildcardParam;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -73,6 +77,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //                .anyRequest().permitAll();
         ;
 
+        http.oauth2Login()
+                .tokenEndpoint().accessTokenResponseClient(new RestOAuth2AccessTokenResponseClient(restOperations()))
+                .and()
+                .userInfoEndpoint().userService(new RestOAuth2UserService(restOperations()));
+
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -82,6 +91,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.csrf().disable();
 
         return http.build();
+    }
+
+    @Bean
+    public RestOperations restOperations() {
+        return new RestTemplate();
     }
 
     @Bean

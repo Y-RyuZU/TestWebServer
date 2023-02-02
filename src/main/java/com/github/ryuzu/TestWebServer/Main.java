@@ -19,7 +19,7 @@ public class Main extends SpringBootServletInitializer {
     public static final Gson gson = new Gson();
 
     public static void main(String[] args) {
-        DiscordBot.initialize();
+//        DiscordBot.initialize();
         SpringApplication.run(Main.class, args);
     }
 }

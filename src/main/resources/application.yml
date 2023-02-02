@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          discord:
+            client-id: 1070501178166759484
+            client-secret: h1SCPv-hxwQDFasU15IeOUWvBA00S1_p
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            scope:
+              - identify
+              - email
+            redirect-uri: "{baseUrl}"
+            clientName: FourScouts client
+        provider:
+          discord:
+            authorizationUri: https://discordapp.com/api/oauth2/authorize
+            tokenUri: https://discordapp.com/api/oauth2/token
+            userInfoUri: https://discordapp.com/api/users/@me
+            user-name-attribute: username
