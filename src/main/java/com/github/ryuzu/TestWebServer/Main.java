@@ -9,11 +9,14 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 @SpringBootApplication//(exclude = {JacksonAutoConfiguration.class,SecurityAutoConfiguration.class})
+@RestController
 public class Main extends SpringBootServletInitializer {
     public static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
     public static final Gson gson = new Gson();
@@ -21,5 +24,10 @@ public class Main extends SpringBootServletInitializer {
     public static void main(String[] args) {
 //        DiscordBot.initialize();
         SpringApplication.run(Main.class, args);
+    }
+
+    @GetMapping("/")
+    public String hello() {
+        return "Hello World";
     }
 }

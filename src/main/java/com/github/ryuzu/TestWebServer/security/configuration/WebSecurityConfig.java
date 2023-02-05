@@ -1,9 +1,6 @@
 package com.github.ryuzu.TestWebServer.security.configuration;
 
-import com.github.ryuzu.TestWebServer.security.oauth2.RestOAuth2AccessTokenResponseClient;
-import com.github.ryuzu.TestWebServer.security.oauth2.RestOAuth2UserService;
 import com.github.ryuzu.TestWebServer.utilities.role.Role;
-import com.github.ryuzu.TestWebServer.utilities.annotations.WildcardParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -30,6 +27,8 @@ import java.util.List;
 public class WebSecurityConfig implements WebMvcConfigurer {
 
     private final UserDetailsService userDetailsService;
+    private final OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient;
+    private final OAuth2UserService<OAuth2UserRequest, OAuth2User> userService;
 
     @Bean
     public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
@@ -77,11 +76,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //                .anyRequest().permitAll();
         ;
 
-        http.oauth2Login()
-                .tokenEndpoint().accessTokenResponseClient(new RestOAuth2AccessTokenResponseClient(restOperations()))
-                .and()
-                .userInfoEndpoint().userService(new RestOAuth2UserService(restOperations()));
 
+        http.oauth2Login()
+                .tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient)
+                .and()
+                .userInfoEndpoint().userService(userService);
+//                .tokenEndpoint().accessTokenResponseClient(new RestOAuth2AccessTokenResponseClient(restOperations()))
+//                .and()
+//                .userInfoEndpoint().userService(new RestOAuth2UserService(restOperations()));
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")

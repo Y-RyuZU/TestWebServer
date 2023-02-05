@@ -3,6 +3,11 @@ package com.github.ryuzu.TestWebServer.redis;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.ryuzu.TestWebServer.redis.database.Member;
+import com.github.ryuzu.TestWebServer.redis.database.RedisRepository;
+import com.redis.om.spring.annotations.EnableRedisDocumentRepositories;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,8 +17,28 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.Set;
+
 @Configuration
+@EnableRedisDocumentRepositories(basePackages = "com.github.ryuzu.TestWebServer.*")
+@RequiredArgsConstructor
 public class RedisConfiguration {
+    private final RedisRepository memberRepo;
+
+    @Bean
+    CommandLineRunner loadTestData() {
+        return args -> {
+            // remove all companies
+            memberRepo.deleteAll();
+
+            // Create a couple of `Company` domain entities
+            var redis = Member.of("Id", "DisplayName", "HashedPassword", 1);
+
+
+            // save companies to the database
+            memberRepo.save(redis);
+        };
+    }
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
@@ -21,8 +46,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String,Object> template = new RedisTemplate <>();
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
 
         var jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);

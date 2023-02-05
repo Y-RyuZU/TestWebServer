@@ -32,6 +32,7 @@ dependencies {
     }
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
@@ -42,6 +43,7 @@ dependencies {
 
     //Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation "com.redis.om:redis-om-spring:0.6.4"
 
     // Guava
     implementation("com.google.guava:guava:31.1-jre")
