@@ -2,6 +2,7 @@ package com.github.ryuzu.TestWebServer;
 
 import com.github.ryuzu.TestWebServer.discord.DiscordBot;
 import com.google.gson.Gson;
+import com.redis.om.spring.annotations.EnableRedisDocumentRepositories;
 import com.sun.net.httpserver.HttpServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 @SpringBootApplication//(exclude = {JacksonAutoConfiguration.class,SecurityAutoConfiguration.class})
+@EnableRedisDocumentRepositories
 @RestController
 public class Main extends SpringBootServletInitializer {
     public static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
