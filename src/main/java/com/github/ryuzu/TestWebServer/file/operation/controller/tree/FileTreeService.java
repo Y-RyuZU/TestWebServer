@@ -26,7 +26,7 @@ public class FileTreeService {
     record DirectoryTreeEntity(String path, String name, DirectoryTreeEntity[] children) {
         public DirectoryTreeEntity(File file) {
             this(
-                    file.getPath().replace((System.getProperty("user.dir") + "/").replace("\\" , "/"), ""),
+                    file.getPath().replace(System.getProperty("user.dir"), "").replace("\\" , "/"),
                     file.getName(),
                     Arrays.stream(Optional.ofNullable(file.listFiles(File::isDirectory)).orElse(new File[0])).map(DirectoryTreeEntity::new).toArray(DirectoryTreeEntity[]::new)
             );
