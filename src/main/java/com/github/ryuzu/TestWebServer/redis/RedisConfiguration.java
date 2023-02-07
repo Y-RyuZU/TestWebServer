@@ -67,7 +67,7 @@ public class RedisConfiguration {
 //    }
 
     @Bean
-    JedisPoolConfig jedisPoolConfig() {
+    public JedisPoolConfig jedisPoolConfig() {
         return new JedisPoolConfig();
     }
 
