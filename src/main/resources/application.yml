@@ -12,14 +12,14 @@ spring:
               - identify
               - email
             redirect-uri: "{baseUrl}/login/oauth2/code/discord"
-            clientName: FourScouts client
+            clientName: Discord client
           github:
             client-id: 416efa8f7ce712e57883
             client-secret: 29463e86f33338c7fc026a6b26e44f7675e1d973
             clientAuthenticationMethod: post
             authorizationGrantType: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/github"
-            clientName: FourScouts client
+            clientName: Github Client
         provider:
           discord:
             authorizationUri: https://discordapp.com/api/oauth2/authorize
@@ -30,4 +30,4 @@ spring:
             authorizationUri: https://github.com/login/oauth/authorize
             tokenUri: https://github.com/login/oauth/access_token
             userInfoUri: https://api.github.com/user
-            user-name-attribute: username
+            user-name-attribute: name
