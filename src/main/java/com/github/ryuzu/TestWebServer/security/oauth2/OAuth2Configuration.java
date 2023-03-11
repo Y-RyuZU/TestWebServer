@@ -35,7 +35,6 @@ public class OAuth2Configuration {
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         var client = new DefaultAuthorizationCodeTokenResponseClient();
-
         client.setRequestEntityConverter(new OAuth2AuthorizationCodeGrantRequestEntityConverter() {
             @Override
             public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest oauth2Request) {
@@ -49,7 +48,6 @@ public class OAuth2Configuration {
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> userService() {
         var service = new DefaultOAuth2UserService();
-
         service.setRequestEntityConverter(new OAuth2UserRequestEntityConverter() {
             @Override
             public RequestEntity<?> convert(OAuth2UserRequest userRequest) {

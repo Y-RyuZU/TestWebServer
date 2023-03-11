@@ -1,6 +1,8 @@
 package com.github.ryuzu.TestWebServer.security.entity;
 
+import com.github.ryuzu.TestWebServer.redis.database.member.Member;
 import com.github.ryuzu.TestWebServer.utilities.role.RoleUtility;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -9,12 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Getter
 public class AccountDetails implements UserDetails {
-    private final AccountEntity entity;
-
-    public AccountEntity getUser() {
-        return entity;
-    }
+    private final Member entity;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { // ユーザに与えられている権限リストを返却するメソッド

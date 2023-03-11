@@ -1,13 +1,13 @@
 package com.github.ryuzu.TestWebServer.file.operation.models.log;
 
-import com.github.ryuzu.TestWebServer.security.entity.AccountEntity;
+import com.github.ryuzu.TestWebServer.redis.database.member.Member;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Builder
 public class FileOperationLog {
-    AccountEntity account;
+    Member account;
     String path;
     FileOperationLogType type;
     String detail;

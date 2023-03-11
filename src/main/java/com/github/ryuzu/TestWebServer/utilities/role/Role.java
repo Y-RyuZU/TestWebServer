@@ -3,7 +3,7 @@ package com.github.ryuzu.TestWebServer.utilities.role;
 import java.util.Arrays;
 
 public enum Role {
-    ADMIN, MOD, USER;
+    USER, MOD, ADMIN;
 
     private int flag;
 

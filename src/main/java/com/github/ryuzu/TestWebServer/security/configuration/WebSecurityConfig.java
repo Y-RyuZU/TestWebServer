@@ -1,5 +1,6 @@
 package com.github.ryuzu.TestWebServer.security.configuration;
 
+import com.github.ryuzu.TestWebServer.security.service.AccountDetailsService;
 import com.github.ryuzu.TestWebServer.utilities.role.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,53 +27,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebSecurityConfig implements WebMvcConfigurer {
 
-    private final UserDetailsService userDetailsService;
+    private final AccountDetailsService userDetailsService;
     private final OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient;
     private final OAuth2UserService<OAuth2UserRequest, OAuth2User> userService;
 
     @Bean
     public SecurityFilterChain securityFilterChains(HttpSecurity http) throws Exception {
 
-        // @formatter:off
-//        http
-//                .formLogin()
-//                .loginPage("/api/signin")
-//                .loginProcessingUrl("/login").permitAll()
-//                .usernameParameter("userName")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/home")             // 認証成功時に遷移するデフォルトのパス
-//                .failureUrl("/loginForm?error=true")   // 認証失敗時に遷移するパス
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/loginForm")         // ログアウト成功時に遷移するパス
-//                .and()
-//                .csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .disable()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        ;
-
-//        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-//        http.csrf().disable();
-
-//        http.exceptionHandling()
-//                .accessDeniedPage("/accessDeniedPage");
-
-//        http.cors().configurationSource(corsConfigurationSource());
-//        http
-//                .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
-//                .addFilterAfter(new JwtAuthorizationFilter(), JwtAuthenticationFilter.class)
-//        ;
         http.userDetailsService(userDetailsService);
 
         http.authorizeHttpRequests()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/user/**").authenticated()
-                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers("/mod/**").hasRole(Role.MOD.name())
+                .requestMatchers("/api/**" , "/").permitAll()
+                .requestMatchers("/user/**").authenticated()
+                .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .requestMatchers("/mod/**").hasRole(Role.MOD.name())
 //                .anyRequest().permitAll();
         ;
 
@@ -93,20 +61,5 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.csrf().disable();
 
         return http.build();
-    }
-
-    @Bean
-    public RestOperations restOperations() {
-        return new RestTemplate();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

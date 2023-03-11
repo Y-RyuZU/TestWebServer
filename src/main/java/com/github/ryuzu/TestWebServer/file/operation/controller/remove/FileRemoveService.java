@@ -11,7 +11,7 @@ import java.io.File;
 public class FileRemoveService {
     public void remove(AccountDetails details, File file) {
         file.deleteOnExit();
-        FileOperationLog.builder().account(details.getUser())
+        FileOperationLog.builder().account(details.getEntity())
                 .path(file.getPath())
                 .type(FileOperationLogType.REMOVE)
                 .build().carve();
