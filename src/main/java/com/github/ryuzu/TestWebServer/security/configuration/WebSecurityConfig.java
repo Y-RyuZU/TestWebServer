@@ -49,9 +49,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient)
                 .and()
                 .userInfoEndpoint().userService(userService);
-//                .tokenEndpoint().accessTokenResponseClient(new RestOAuth2AccessTokenResponseClient(restOperations()))
-//                .and()
-//                .userInfoEndpoint().userService(new RestOAuth2UserService(restOperations()));
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")

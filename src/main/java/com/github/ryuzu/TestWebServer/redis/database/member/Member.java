@@ -9,9 +9,8 @@ import org.springframework.data.annotation.Id;
 
 @Document
 @RequiredArgsConstructor(staticName = "of")
-@SuperBuilder
 //@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Data(staticConstructor = "of")
 public class Member {
     @Id
     @Indexed
@@ -26,4 +25,17 @@ public class Member {
     @Indexed
     @NonNull
     private Integer roles;
+    @Indexed
+    @NonNull
+    private MemberType type = MemberType.DEFAULT;
+
+    public Member discord() {
+        this.type = MemberType.DISCORD;
+        return this;
+    }
+
+    public Member github() {
+        this.type = MemberType.GITHUB;
+        return this;
+    }
 }

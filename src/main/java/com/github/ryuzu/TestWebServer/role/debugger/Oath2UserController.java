@@ -19,9 +19,4 @@ public class Oath2UserController {
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         return principal.getAttributes();
     }
-
-    @GetMapping("/code")
-    public void user(@RequestParam String code) {
-
-    }
 }
