@@ -4,30 +4,31 @@ spring:
       client:
         registration:
           discord:
+            provider: discord
             client-id: 1070501178166759484
-            client-secret: h1SCPv-hxwQDFasU15IeOUWvBA00S1_p
-            clientAuthenticationMethod: post
+            client-secret: XSxB2VNW-CF_dLPAMJ3AYIrXK2fHrRxd
+            clientAuthenticationMethod: none
             authorizationGrantType: authorization_code
             scope:
               - identify
               - email
             redirect-uri: "{baseUrl}/login/oauth2/code/discord"
-            clientName: Discord client
+            client-name: Discord
           github:
+            provider: github
             client-id: 416efa8f7ce712e57883
             client-secret: 29463e86f33338c7fc026a6b26e44f7675e1d973
-            clientAuthenticationMethod: post
             authorizationGrantType: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/github"
-            clientName: Github Client
+            client-name: Github
         provider:
           discord:
             authorizationUri: https://discordapp.com/api/oauth2/authorize
             tokenUri: https://discordapp.com/api/oauth2/token
             userInfoUri: https://discordapp.com/api/users/@me
-            user-name-attribute: username
+            user-name-attribute: id
           github:
             authorizationUri: https://github.com/login/oauth/authorize
             tokenUri: https://github.com/login/oauth/access_token
             userInfoUri: https://api.github.com/user
-            user-name-attribute: name
+            user-name-attribute: id

@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
 @Document
-@RequiredArgsConstructor(staticName = "of")
+//@RequiredArgsConstructor(staticName = "of")
 //@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Data(staticConstructor = "of")
 public class Member {

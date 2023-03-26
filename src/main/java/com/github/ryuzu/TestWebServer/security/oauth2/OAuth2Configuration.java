@@ -1,13 +1,9 @@
 package com.github.ryuzu.TestWebServer.security.oauth2;
 
-import com.github.ryuzu.TestWebServer.security.oauth2.providers.DiscordLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
-import org.springframework.security.oauth2.client.AuthorizationCodeOAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -17,18 +13,8 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequestEntityConverter;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Configuration
 public class OAuth2Configuration {
@@ -48,7 +34,6 @@ public class OAuth2Configuration {
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> userService() {
         var service = new DefaultOAuth2UserService();
-
         service.setRequestEntityConverter(new OAuth2UserRequestEntityConverter() {
             @Override
             public RequestEntity<?> convert(OAuth2UserRequest userRequest) {
@@ -62,10 +47,11 @@ public class OAuth2Configuration {
     public static RequestEntity<?> withUserAgent(RequestEntity<?> request) {
         var headers = new HttpHeaders();
         headers.putAll(request.getHeaders());
-        headers.add(HttpHeaders.USER_AGENT, DiscordLoginService.DISCORD_BOT_USER_AGENT);
+        headers.add(HttpHeaders.USER_AGENT, OAuthProvider.DISCORD.getAgent());
 
         return new RequestEntity<>(request.getBody(), headers, request.getMethod(), request.getUrl());
     }
+
 //
 //    @Bean
 //    public OAuth2AuthorizedClientManager authorizedClientManager(
